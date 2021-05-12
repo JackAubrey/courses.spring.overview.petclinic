@@ -3,7 +3,6 @@
  */
 package courses.sov.petclinic.controller;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import courses.sov.petclinic.service.GreetingService;
@@ -14,9 +13,10 @@ import courses.sov.petclinic.service.GreetingService;
  * This is the best practice.
  * 
  * NOTE: when we use constructor method the @Autowire annotation is optional since Spring 4.2
+ * 
  */
 @Controller
-public class ConstructorInjectedController {
+public class PrimaryBeanConstructorInjectedController {
 	private final GreetingService service;
 	
 	/**
@@ -24,11 +24,10 @@ public class ConstructorInjectedController {
 	 * 
 	 * NOTE when we use constructor method the @Autowire annotation is optional since Spring 4.2
 	 * 
-	 * NOTE in this exercise evolution, since we have two implementation of the GreetingService interface
-	 * 		we use the @Qualifier annotation to says which one we want to use.
-	 * 		without this, Spring fails during startup because it does not knows which implementation you want.
+	 * NOTE in this exercise evolution, we have declared the service PrimaryGreetingServiceImpl as primary implementation of the GreatingService.
+	 * This means Spring candidate that as default when multiple class implements a certain interface a no Qualifier has been used
 	 */
-	public ConstructorInjectedController(@Qualifier("itGreetingServiceImpl") GreetingService service) {
+	public PrimaryBeanConstructorInjectedController(GreetingService service) {
 		super();
 		this.service = service;
 	}

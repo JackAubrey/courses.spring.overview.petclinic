@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import courses.sov.petclinic.controller.ConstructorInjectedController;
 import courses.sov.petclinic.controller.MyController;
+import courses.sov.petclinic.controller.PrimaryBeanConstructorInjectedController;
 import courses.sov.petclinic.controller.PropertyInjectedController;
 import courses.sov.petclinic.controller.SetterInjectedController;
 
@@ -33,6 +34,10 @@ public class Application {
 		System.out.println("----- Constructor Service Greeting");
 		ConstructorInjectedController constructorInjectedController = (ConstructorInjectedController)ctx.getBean("constructorInjectedController");
 		System.out.println(constructorInjectedController.sayHello());
+		
+		System.out.println("----- Primary Constructor Service Greeting");
+		PrimaryBeanConstructorInjectedController primaryBeanConstructorInjectedController = (PrimaryBeanConstructorInjectedController)ctx.getBean("primaryBeanConstructorInjectedController");
+		System.out.println(primaryBeanConstructorInjectedController.sayHello());
 	}
 
 }
