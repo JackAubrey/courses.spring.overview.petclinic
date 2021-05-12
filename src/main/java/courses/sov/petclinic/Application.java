@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import courses.sov.petclinic.controller.ConstructorInjectedController;
+import courses.sov.petclinic.controller.I18NController;
 import courses.sov.petclinic.controller.MyController;
 import courses.sov.petclinic.controller.PrimaryBeanConstructorInjectedController;
 import courses.sov.petclinic.controller.PropertyInjectedController;
@@ -38,6 +39,10 @@ public class Application {
 		System.out.println("----- Primary Constructor Service Greeting");
 		PrimaryBeanConstructorInjectedController primaryBeanConstructorInjectedController = (PrimaryBeanConstructorInjectedController)ctx.getBean("primaryBeanConstructorInjectedController");
 		System.out.println(primaryBeanConstructorInjectedController.sayHello());
+		
+		System.out.println("----- I18N Service Greeting");
+		I18NController i18NController = (I18NController)ctx.getBean("i18NController");
+		System.out.println(i18NController.sayHello());
 	}
 
 }
