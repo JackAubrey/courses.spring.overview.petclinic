@@ -9,27 +9,27 @@
 		<version>2.4.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
+
 	<modules>
 		<module>pet-clinic-data</module>
 		<module>pet-clinic-web</module>
 	</modules>
-	
+
 	<packaging>pom</packaging>
-	
+
 	<groupId>courses.study</groupId>
 	<artifactId>spring.overview.petclinic</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>spring.overview.petclinic</name>
-	
+
 	<description>Courses: pet Clinic project</description>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.report.outputEncoding>UTF-8</project.report.outputEncoding>
 		<java.version>11</java.version>
 	</properties>
-	
+
 	<dependencies>
 	</dependencies>
 
@@ -52,15 +52,21 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<goals>
+						<!-- 
+							since this plugin works with "deploy" goal
+							we configure it in order to works with "install" goal
+							because we don't want deploy this application 
+						-->
 						<goal>install</goal>
 					</goals>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<scm>
 		<!-- use command: mvn release:prepare -->
 		<developerConnection>scm:git:git@github.com:JackAubrey/courses.spring.overview.petclinic.git</developerConnection>
+		<tag>spring.overview.petclinic-0.0.1</tag>
 	</scm>
 </project>
