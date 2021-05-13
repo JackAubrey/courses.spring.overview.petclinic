@@ -7,6 +7,13 @@
 		<artifactId>spring.overview.petclinic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.report.outputEncoding>UTF-8</project.report.outputEncoding>
+		<java.version>11</java.version>
+	</properties>
+	
 	<artifactId>pet-clinic-web</artifactId>
 	<dependencies>
 		<dependency>

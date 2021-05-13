@@ -10,6 +10,9 @@
 
 	<properties>
 		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.report.outputEncoding>UTF-8</project.report.outputEncoding>
+		<java.version>11</java.version>
 	</properties>
 
 	<artifactId>pet-clinic-data</artifactId>
