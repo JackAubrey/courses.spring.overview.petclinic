@@ -55,6 +55,7 @@
 						because we don't want deploy this application 
 					-->
 					<goals>install</goals>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
 		</plugins>
