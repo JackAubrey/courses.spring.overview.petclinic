@@ -7,7 +7,12 @@ package courses.sov.petclinic.model;
  * @author dcividin
  *
  */
-public class Person {
+public class Person extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8113001019059163865L;
+	
 	private String firstName;
 	private String lastName;
 	/**
