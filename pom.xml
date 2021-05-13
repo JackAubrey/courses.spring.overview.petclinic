@@ -17,7 +17,7 @@
 
 	<groupId>courses.study</groupId>
 	<artifactId>spring.overview.petclinic</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>spring.overview.petclinic</name>
 
 	<description>Courses: pet Clinic project</description>
@@ -65,6 +65,6 @@
 		<!-- use command: mvn release:prepare -->
 		<!-- BEWARE: ensure your maven is right configured in order to use a JDK at least 11 -->
 		<developerConnection>scm:git:git@github.com:JackAubrey/courses.spring.overview.petclinic.git</developerConnection>
-		<tag>spring.overview.petclinic-0.0.2</tag>
+		<tag>spring.overview.petclinic-0.0.1</tag>
 	</scm>
 </project>
