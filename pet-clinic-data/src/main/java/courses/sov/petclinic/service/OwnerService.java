@@ -3,6 +3,8 @@
  */
 package courses.sov.petclinic.service;
 
+import java.util.Optional;
+
 import courses.sov.petclinic.model.Owner;
 
 /**
@@ -10,5 +12,5 @@ import courses.sov.petclinic.model.Owner;
  *
  */
 public interface OwnerService extends CrudService<Owner, Long>{
-	Owner findByLastName(String lastName);
+	Optional<Owner> findByLastName(String lastName);
 }

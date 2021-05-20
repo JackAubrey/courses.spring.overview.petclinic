@@ -3,6 +3,7 @@
  */
 package courses.sov.petclinic.service;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Set;
  *
  */
 public interface CrudService <T, ID> {
-	T findById(ID id);
+	Optional<T> findById(ID id);
 	
 	Set<T> findAll();
 	

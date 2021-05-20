@@ -3,6 +3,8 @@
  */
 package courses.sov.petclinic.service;
 
+import java.util.Optional;
+
 import courses.sov.petclinic.model.Vet;
 
 /**
@@ -10,5 +12,5 @@ import courses.sov.petclinic.model.Vet;
  *
  */
 public interface VetService extends CrudService<Vet, Long> {
-	Vet findByLastName(String lastName);
+	Optional<Vet> findByLastName(String lastName);
 }
