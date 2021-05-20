@@ -13,6 +13,7 @@ import courses.sov.petclinic.service.VetService;
  * @author dcividin
  *
  */
+@RequestMapping("/vets")
 @Controller
 public class VetController {
 //	private final VetService service;
@@ -21,7 +22,7 @@ public class VetController {
 //		this.service = service;
 //	}
 	
-	@RequestMapping({"/vets", "/vets/index", "/vets/index.html"})
+	@RequestMapping({"", "/", "/index", "/index.html"})
 	public String list(Model model) {
 //		model.addAttribute("list", service.findAll());
 		
