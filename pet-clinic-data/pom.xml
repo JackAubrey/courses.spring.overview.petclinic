@@ -7,7 +7,11 @@
 	</parent>
 
 	<properties>
+		<!-- this property is fundamental for the new version of Spring from 2.4.1 -->
+		<!-- it has the same effect of the old goal used into maven-sure-fire "repackage" -->
+		<!-- and it is used to avoid the raising of error when we use multi-module -->
 		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.report.outputEncoding>UTF-8</project.report.outputEncoding>
 		<java.version>11</java.version>
