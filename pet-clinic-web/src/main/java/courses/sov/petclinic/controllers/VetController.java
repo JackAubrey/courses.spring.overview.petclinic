@@ -28,4 +28,8 @@ public class VetController {
 		
 		return "vets/index";
 	}
+	
+	public String doOther() {
+		return "other";
+	}
 }
