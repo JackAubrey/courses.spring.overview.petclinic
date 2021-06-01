@@ -16,15 +16,15 @@ import courses.sov.petclinic.service.VetService;
 @RequestMapping("/vets")
 @Controller
 public class VetController {
-//	private final VetService service;
-//	
-//	public VetController(VetService service) {
-//		this.service = service;
-//	}
+	private final VetService service;
+	
+	public VetController(VetService service) {
+		this.service = service;
+	}
 	
 	@RequestMapping({"", "/", "/index", "/index.html"})
 	public String list(Model model) {
-//		model.addAttribute("list", service.findAll());
+		model.addAttribute("vets", service.findAll());
 		
 		return "vets/index";
 	}
