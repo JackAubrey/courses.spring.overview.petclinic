@@ -3,8 +3,6 @@
  */
 package courses.sov.petclinic.bootstrap;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -34,21 +32,15 @@ public class DataInitializer implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		AtomicLong seqOwner = new AtomicLong();
-		AtomicLong seqVet = new AtomicLong();
-		
-		Owner owner1 = new Owner();
-		owner1.setId(seqOwner.incrementAndGet());
+		var owner1 = new Owner();
 		owner1.setFirstName("Danilo");
 		owner1.setLastName("Stoner");
 		
-		Owner owner2 = new Owner();
-		owner2.setId(seqOwner.incrementAndGet());
+		var owner2 = new Owner();
 		owner2.setFirstName("Andrea");
 		owner2.setLastName("Marquez");
 		
-		Owner owner3 = new Owner();
-		owner3.setId(seqOwner.incrementAndGet());
+		var owner3 = new Owner();
 		owner3.setFirstName("Alberto");
 		owner3.setLastName("Rossi");
 		
@@ -58,18 +50,15 @@ public class DataInitializer implements CommandLineRunner {
 
 		log.info("Loaded Owners.......");
 		
-		Vet vet1 = new Vet();
-		vet1.setId(seqVet.incrementAndGet());
+		var vet1 = new Vet();
 		vet1.setFirstName("Paolo");
 		vet1.setLastName("Amedei");
 		
-		Vet vet2 = new Vet();
-		vet2.setId(seqVet.incrementAndGet());
+		var vet2 = new Vet();
 		vet2.setFirstName("Luca");
 		vet2.setLastName("Antonelli");
 		
-		Vet vet3 = new Vet();
-		vet3.setId(seqVet.incrementAndGet());
+		var vet3 = new Vet();
 		vet3.setFirstName("Mirco");
 		vet3.setLastName("Sinatra");
 		

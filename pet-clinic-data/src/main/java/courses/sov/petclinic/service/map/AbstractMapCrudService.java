@@ -5,18 +5,22 @@ package courses.sov.petclinic.service.map;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
+import courses.sov.petclinic.model.BaseEntity;
 import courses.sov.petclinic.service.CrudService;
 
 /**
  * @author dcividin
  *
  */
-public abstract class AbstractMapCrudService<T, ID> implements CrudService<T, ID> {
-	protected Map<ID, T> map = new HashMap<>();
+public abstract class AbstractMapCrudService<T extends BaseEntity, ID extends Number> implements CrudService<T, ID > {
+	protected Map<Number, T> map = new LinkedHashMap<>();
+	private AtomicLong sequence = new AtomicLong();
 	
 	@Override
 	public Set<T> findAll() {
@@ -34,8 +38,15 @@ public abstract class AbstractMapCrudService<T, ID> implements CrudService<T, ID
 		}
 	}
 	
-	public T save(ID id, T object) {
-		return map.put(id, object);
+	public T save(T object) {
+		if(object != null) {
+			if(object.getId() == null) {
+				object.setId(getNextId());
+			}
+			return map.put(object.getId(), object);
+		} else {
+			throw new RuntimeException("Object is null");
+		}
 	}
 	
 	@Override
@@ -48,5 +59,9 @@ public abstract class AbstractMapCrudService<T, ID> implements CrudService<T, ID
 	@Override
 	public void delete(T object) {
 		map.entrySet().removeIf(e -> e.getValue().equals(object));
+	}
+	
+	private Long getNextId() {
+		return sequence.incrementAndGet();
 	}
 }
