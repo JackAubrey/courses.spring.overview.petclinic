@@ -14,8 +14,6 @@ import courses.sov.petclinic.model.Owner;
 import courses.sov.petclinic.model.Vet;
 import courses.sov.petclinic.service.OwnerService;
 import courses.sov.petclinic.service.VetService;
-import courses.sov.petclinic.service.map.OwnerServiceMap;
-import courses.sov.petclinic.service.map.VetServiceMap;
 
 /**
  * @author dcividin

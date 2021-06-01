@@ -16,15 +16,15 @@ import courses.sov.petclinic.service.OwnerService;
 @RequestMapping("/owners")
 @Controller
 public class OwnerController {
-//	private final OwnerService service;
-//	
-//	public OwnerController(OwnerService service) {
-//		this.service = service;
-//	}
+	private final OwnerService service;
+	
+	public OwnerController(OwnerService service) {
+		this.service = service;
+	}
 	
 	@RequestMapping({"", "/", "/index", "/index.html"})
 	public String list(Model model) {
-//		model.addAttribute("list", service.findAll());
+		model.addAttribute("owners", service.findAll());
 		
 		return "owners/index";
 	}
