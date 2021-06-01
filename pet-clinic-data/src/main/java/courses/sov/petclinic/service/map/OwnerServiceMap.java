@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.stereotype.Service;
+
 import courses.sov.petclinic.model.Owner;
 import courses.sov.petclinic.service.OwnerService;
 
@@ -14,6 +16,7 @@ import courses.sov.petclinic.service.OwnerService;
  * @author dcividin
  *
  */
+@Service
 public class OwnerServiceMap extends AbstractMapCrudService<Owner, Long> implements OwnerService {
 	private AtomicLong sequence = new AtomicLong();
 	

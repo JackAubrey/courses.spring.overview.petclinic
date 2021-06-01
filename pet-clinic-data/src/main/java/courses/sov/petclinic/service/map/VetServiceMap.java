@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.stereotype.Service;
+
 import courses.sov.petclinic.model.Vet;
 import courses.sov.petclinic.service.VetService;
 
@@ -14,6 +16,7 @@ import courses.sov.petclinic.service.VetService;
  * @author dcividin
  *
  */
+@Service
 public class VetServiceMap extends AbstractMapCrudService<Vet, Long> implements VetService {
 	private AtomicLong sequence = new AtomicLong();
 	
