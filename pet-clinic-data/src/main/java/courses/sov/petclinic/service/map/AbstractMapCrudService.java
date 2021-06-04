@@ -3,7 +3,6 @@
  */
 package courses.sov.petclinic.service.map;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
