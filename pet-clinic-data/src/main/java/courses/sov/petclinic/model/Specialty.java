@@ -16,6 +16,21 @@ public class Specialty extends BaseEntity {
 	private String description;
 
 	/**
+	 * 
+	 */
+	public Specialty() {
+		super();
+	}
+	
+	/**
+	 * @param description
+	 */
+	public Specialty(String description) {
+		super();
+		this.description = description;
+	}
+
+	/**
 	 * @return the description
 	 */
 	public String getDescription() {

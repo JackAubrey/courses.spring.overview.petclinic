@@ -63,6 +63,11 @@ public abstract class AbstractMapCrudService<T extends BaseEntity, ID extends Nu
 		map.entrySet().removeIf(e -> e.getValue().equals(object));
 	}
 	
+	@Override
+	public long count() {
+		return map.size();
+	}
+	
 	private Long getNextId() {
 		return sequence.incrementAndGet();
 	}

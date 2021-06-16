@@ -13,9 +13,11 @@ import org.springframework.stereotype.Component;
 import courses.sov.petclinic.model.Owner;
 import courses.sov.petclinic.model.Pet;
 import courses.sov.petclinic.model.PetType;
+import courses.sov.petclinic.model.Specialty;
 import courses.sov.petclinic.model.Vet;
 import courses.sov.petclinic.service.OwnerService;
 import courses.sov.petclinic.service.PetTypeService;
+import courses.sov.petclinic.service.SpecialtyService;
 import courses.sov.petclinic.service.VetService;
 
 /**
@@ -30,20 +32,36 @@ public class DataInitializer implements CommandLineRunner {
 	private final OwnerService ownerService;
 	private final VetService vetService;
 	private final PetTypeService petTypeService;
+	private final SpecialtyService specialtyService;
 	
-	public DataInitializer(OwnerService ownerService, VetService vetService, PetTypeService petTypeService) {
+	public DataInitializer(OwnerService ownerService, VetService vetService, PetTypeService petTypeService,
+			SpecialtyService specialtyService) {
 		this.ownerService = ownerService;
 		this.vetService = vetService;
 		this.petTypeService = petTypeService;
+		this.specialtyService = specialtyService;
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+		long count = petTypeService.count();
+		
+		if(count == 0) {
+			loadData();
+		}
+	}
+
+	private void loadData() {
 		var dog = petTypeService.save( new PetType("Dog") );
 		var cat = petTypeService.save( new PetType("Cat") );
 		var horse = petTypeService.save( new PetType("Horse") );
 		
 		log.info("Loaded PetTypes.......");
+		
+		log.info("Loaded Specialties.......");
+		var radiology = specialtyService.save(new Specialty("Radiology"));
+		var surgery = specialtyService.save(new Specialty("Surgery"));
+		var dentistry = specialtyService.save(new Specialty("Dentistry"));
 		
 		var owner1 = new Owner();
 		owner1.setFirstName("Danilo");
@@ -96,14 +114,18 @@ public class DataInitializer implements CommandLineRunner {
 		var vet1 = new Vet();
 		vet1.setFirstName("Paolo");
 		vet1.setLastName("Amedei");
+		vet1.addSpecialty(dentistry);
 		
 		var vet2 = new Vet();
 		vet2.setFirstName("Luca");
 		vet2.setLastName("Antonelli");
+		vet2.addSpecialty(surgery);
+		vet2.addSpecialty(radiology);
 		
 		var vet3 = new Vet();
 		vet3.setFirstName("Mirco");
 		vet3.setLastName("Sinatra");
+		vet3.addSpecialty(radiology);
 		
 		vetService.save(vet1);
 		vetService.save(vet2);
