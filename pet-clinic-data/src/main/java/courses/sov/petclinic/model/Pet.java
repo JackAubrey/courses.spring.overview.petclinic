@@ -9,17 +9,23 @@ import java.time.LocalDate;
  * @author dcividin
  *
  */
-public class Pet extends BaseEntity {
+public class Pet extends NamedEntity {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5848317630792706665L;
-
+	
 	private LocalDate birthDate;
-	
 	private PetType type;
-	
 	private Owner owner;
+	
+	/**
+	 * 
+	 * @param name
+	 */
+	public Pet(String name) {
+		super(name);
+	}
 	
 	/**
 	 * @return the birthDate
@@ -30,8 +36,9 @@ public class Pet extends BaseEntity {
 	/**
 	 * @param birthDate the birthDate to set
 	 */
-	public void setBirthDate(LocalDate birthDate) {
+	public Pet setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
+		return this;
 	}
 	/**
 	 * @return the type
@@ -42,8 +49,9 @@ public class Pet extends BaseEntity {
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(PetType type) {
+	public Pet setType(PetType type) {
 		this.type = type;
+		return this;
 	}
 	/**
 	 * @return the owner
@@ -54,7 +62,8 @@ public class Pet extends BaseEntity {
 	/**
 	 * @param owner the owner to set
 	 */
-	public void setOwner(Owner owner) {
+	public Pet setOwner(Owner owner) {
 		this.owner = owner;
+		return this;
 	}
 }

@@ -3,6 +3,7 @@
  */
 package courses.sov.petclinic.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -15,7 +16,7 @@ public class Vet extends Person {
 	 */
 	private static final long serialVersionUID = -6155651241409836039L;
 
-	private Set<Specialty> specialties;
+	private Set<Specialty> specialties = new HashSet<>();
 
 	/**
 	 * @return the specialties
@@ -29,5 +30,17 @@ public class Vet extends Person {
 	 */
 	public void setSpecialties(Set<Specialty> specialties) {
 		this.specialties = specialties;
+	}
+	
+	/**
+	 * 
+	 * @param e
+	 */
+	public void addSpecialty(Specialty e) {
+		if(this.specialties == null) {
+			this.specialties = new HashSet<>();
+		}
+		
+		this.specialties.add(e);
 	}
 }

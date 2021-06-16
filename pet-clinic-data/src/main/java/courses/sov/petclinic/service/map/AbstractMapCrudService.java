@@ -42,7 +42,10 @@ public abstract class AbstractMapCrudService<T extends BaseEntity, ID extends Nu
 			if(object.getId() == null) {
 				object.setId(getNextId());
 			}
-			return map.put(object.getId(), object);
+			
+			map.put(object.getId(), object);
+			
+			return object;
 		} else {
 			throw new RuntimeException("Object is null");
 		}

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author dcividin
  *
  */
-public class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
 	/**
 	 * 
 	 */

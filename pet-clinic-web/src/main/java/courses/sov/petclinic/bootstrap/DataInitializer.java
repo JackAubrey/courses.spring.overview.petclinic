@@ -3,12 +3,15 @@
  */
 package courses.sov.petclinic.bootstrap;
 
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import courses.sov.petclinic.model.Owner;
+import courses.sov.petclinic.model.Pet;
 import courses.sov.petclinic.model.PetType;
 import courses.sov.petclinic.model.Vet;
 import courses.sov.petclinic.service.OwnerService;
@@ -38,24 +41,51 @@ public class DataInitializer implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		var dog = petTypeService.save( new PetType("Dog") );
 		var cat = petTypeService.save( new PetType("Cat") );
-		var bird = petTypeService.save( new PetType("Bird") );
 		var horse = petTypeService.save( new PetType("Horse") );
-		var caw = petTypeService.save( new PetType("Caw") );
-		var mule = petTypeService.save( new PetType("Mule") );
 		
 		log.info("Loaded PetTypes.......");
 		
 		var owner1 = new Owner();
 		owner1.setFirstName("Danilo");
 		owner1.setLastName("Stoner");
+		owner1.setAddress("Viale della libertà, 1");
+		owner1.setCity("Roma");
+		owner1.setTelephone("063090570");
+		
+		var owner1Pet = new Pet("Poldo")
+				.setBirthDate(LocalDate.now())
+				.setOwner(owner1)
+				.setType(dog);
+		
+		owner1.addPet(owner1Pet);
 		
 		var owner2 = new Owner();
 		owner2.setFirstName("Andrea");
 		owner2.setLastName("Marquez");
+		owner2.setAddress("Piazza dei Sanniti, 123");
+		owner2.setCity("Roma");
+		owner2.setTelephone("065790871");
+		
+		var owner2Pet = new Pet("Melody")
+				.setBirthDate(LocalDate.now())
+				.setOwner(owner2)
+				.setType(cat);
+		
+		owner2.addPet(owner2Pet);
 		
 		var owner3 = new Owner();
 		owner3.setFirstName("Alberto");
 		owner3.setLastName("Rossi");
+		owner3.setAddress("Viale 5 maggio, 41");
+		owner3.setCity("Milano");
+		owner3.setTelephone("024091560");
+		
+		var owner3Pet = new Pet("Furia")
+				.setBirthDate(LocalDate.now())
+				.setOwner(owner3)
+				.setType(horse);
+		
+		owner3.addPet(owner3Pet);
 		
 		ownerService.save(owner1);
 		ownerService.save(owner2);
