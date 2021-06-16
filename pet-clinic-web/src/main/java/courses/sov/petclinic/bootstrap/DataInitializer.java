@@ -9,8 +9,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import courses.sov.petclinic.model.Owner;
+import courses.sov.petclinic.model.PetType;
 import courses.sov.petclinic.model.Vet;
 import courses.sov.petclinic.service.OwnerService;
+import courses.sov.petclinic.service.PetTypeService;
 import courses.sov.petclinic.service.VetService;
 
 /**
@@ -24,14 +26,25 @@ public class DataInitializer implements CommandLineRunner {
 
 	private final OwnerService ownerService;
 	private final VetService vetService;
+	private final PetTypeService petTypeService;
 	
-	public DataInitializer(OwnerService ownerService, VetService vetService) {
+	public DataInitializer(OwnerService ownerService, VetService vetService, PetTypeService petTypeService) {
 		this.ownerService = ownerService;
 		this.vetService = vetService;
+		this.petTypeService = petTypeService;
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+		var dog = petTypeService.save( new PetType("Dog") );
+		var cat = petTypeService.save( new PetType("Cat") );
+		var bird = petTypeService.save( new PetType("Bird") );
+		var horse = petTypeService.save( new PetType("Horse") );
+		var caw = petTypeService.save( new PetType("Caw") );
+		var mule = petTypeService.save( new PetType("Mule") );
+		
+		log.info("Loaded PetTypes.......");
+		
 		var owner1 = new Owner();
 		owner1.setFirstName("Danilo");
 		owner1.setLastName("Stoner");

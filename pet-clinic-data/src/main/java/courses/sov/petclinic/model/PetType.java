@@ -16,6 +16,22 @@ public class PetType extends BaseEntity {
 	private String name;
 
 	/**
+	 * 
+	 */
+	public PetType() {
+		super();
+	}
+
+	/**
+	 * 
+	 * @param name
+	 */
+	public PetType(String name) {
+		super();
+		this.name = name;
+	}
+
+	/**
 	 * @return the name
 	 */
 	public String getName() {
