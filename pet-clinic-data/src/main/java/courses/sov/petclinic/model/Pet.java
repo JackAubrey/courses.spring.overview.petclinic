@@ -5,26 +5,54 @@ package courses.sov.petclinic.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  * @author dcividin
  *
  */
+@Entity
+@Table(name = "pets")
 public class Pet extends NamedEntity {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5848317630792706665L;
-	
-	private LocalDate birthDate;
+
+	@ManyToOne
+	@JoinColumn(name = "pet_type_id")
 	private PetType type;
+	
+	@Column(name = "birth_date")
+	@Temporal(TemporalType.DATE)
+	private LocalDate birthDate;
+	
+	// the foreign key goes her because "the owner of the relationship" between parent and child
+	// delegate this responsibility to the child.
+	// this is the reason why we use @JoinColumn here an not in "owner" class
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
 	private Owner owner;
+	
+	/**
+	 * 
+	 */
+	public Pet() {
+		super();
+	}
 	
 	/**
 	 * 
 	 * @param name
 	 */
 	public Pet(String name) {
-		super(name);
+		this.setName(name);
 	}
 	
 	/**
