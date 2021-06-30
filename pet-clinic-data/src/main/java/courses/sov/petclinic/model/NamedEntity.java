@@ -3,10 +3,13 @@
  */
 package courses.sov.petclinic.model;
 
+import javax.persistence.MappedSuperclass;
+
 /**
  * @author dcividin
  *
  */
+@MappedSuperclass
 public abstract class NamedEntity extends BaseEntity {
 	/**
 	 * 
@@ -19,7 +22,7 @@ public abstract class NamedEntity extends BaseEntity {
 	 * 
 	 * @param name
 	 */
-	public NamedEntity(String name) {
+	protected NamedEntity(String name) {
 		super();
 		this.name = name;
 	}
