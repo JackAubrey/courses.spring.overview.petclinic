@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * @author dcividin
@@ -30,7 +28,6 @@ public class Pet extends NamedEntity {
 	private PetType type;
 	
 	@Column(name = "birth_date")
-	@Temporal(TemporalType.DATE)
 	private LocalDate birthDate;
 	
 	// the foreign key goes her because "the owner of the relationship" between parent and child
