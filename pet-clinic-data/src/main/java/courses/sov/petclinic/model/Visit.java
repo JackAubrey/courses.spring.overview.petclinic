@@ -5,18 +5,34 @@ package courses.sov.petclinic.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * @author dcividin
  *
  */
+@Entity
+@Table(name = "visits")
 public class Visit extends BaseEntity {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1383248854710978391L;
 	
+	@Column(name = "visit_date")
 	private LocalDate date;
+	
+	@Column(name = "description")
+	@Lob
 	private String description;
+	
+	@ManyToOne
+	@JoinColumn(name = "pet_id")
 	private Pet pet;
 	
 	/**

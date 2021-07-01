@@ -4,11 +4,15 @@
 package courses.sov.petclinic.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -36,6 +40,9 @@ public class Pet extends NamedEntity {
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
+	private Set<Visit> visits = new HashSet<>();
 	
 	/**
 	 * 
@@ -90,5 +97,35 @@ public class Pet extends NamedEntity {
 	public Pet setOwner(Owner owner) {
 		this.owner = owner;
 		return this;
+	}
+
+	/**
+	 * @return the visits
+	 */
+	public Set<Visit> getVisits() {
+		return visits;
+	}
+
+	/**
+	 * @param visits the visits to set
+	 */
+	public void setVisits(Set<Visit> visits) {
+		this.visits = visits == null ? new HashSet<>() : new HashSet<>(visits);
+		
+		this.visits.forEach(v -> v.setPet(this));
+	}
+	
+	/**
+	 * @param visit the visit to set
+	 */
+	public void addVisit(Visit visit) {
+		if(this.visits == null) {
+			this.visits = new HashSet<>();
+		}
+		
+		if(visit != null) {
+			visit.setPet(this);
+			this.visits.add(visit);
+		}
 	}
 }
