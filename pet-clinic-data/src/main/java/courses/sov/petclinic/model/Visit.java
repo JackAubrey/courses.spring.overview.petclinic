@@ -44,8 +44,9 @@ public class Visit extends BaseEntity {
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(LocalDate date) {
+	public Visit setDate(LocalDate date) {
 		this.date = date;
+		return this;
 	}
 	/**
 	 * @return the description
@@ -56,8 +57,9 @@ public class Visit extends BaseEntity {
 	/**
 	 * @param description the description to set
 	 */
-	public void setDescription(String description) {
+	public Visit setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	/**
 	 * @return the pet
@@ -68,8 +70,9 @@ public class Visit extends BaseEntity {
 	/**
 	 * @param pet the pet to set
 	 */
-	public void setPet(Pet pet) {
+	public Visit setPet(Pet pet) {
 		this.pet = pet;
+		return this;
 	}
 
 }
