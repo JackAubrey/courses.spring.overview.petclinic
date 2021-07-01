@@ -18,11 +18,11 @@ import courses.sov.petclinic.service.PetTypeService;
  *
  */
 @Service
-public class OwnerServiceMap extends AbstractMapCrudService<Owner, Long> implements OwnerService {
+public class OwnerMapService extends AbstractMapCrudService<Owner, Long> implements OwnerService {
 	private final PetService petService;
 	private final PetTypeService petTypeService;
 	
-	public OwnerServiceMap(PetService petService, PetTypeService petTypeService) {
+	public OwnerMapService(PetService petService, PetTypeService petTypeService) {
 		this.petService = petService;
 		this.petTypeService = petTypeService;
 		

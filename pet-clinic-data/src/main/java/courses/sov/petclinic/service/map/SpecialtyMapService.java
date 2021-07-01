@@ -13,7 +13,7 @@ import courses.sov.petclinic.service.SpecialtyService;
  *
  */
 @Service
-public class SpecialtyServiceMap extends AbstractMapCrudService<Specialty, Long> implements SpecialtyService {
+public class SpecialtyMapService extends AbstractMapCrudService<Specialty, Long> implements SpecialtyService {
 
 
 }

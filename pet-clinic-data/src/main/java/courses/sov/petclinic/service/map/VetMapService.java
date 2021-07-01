@@ -17,13 +17,13 @@ import courses.sov.petclinic.service.VetService;
  *
  */
 @Service
-public class VetServiceMap extends AbstractMapCrudService<Vet, Long> implements VetService {
+public class VetMapService extends AbstractMapCrudService<Vet, Long> implements VetService {
 	private final SpecialtyService specialtyService;
 	
 	/**
 	 * @param specialtyService
 	 */
-	public VetServiceMap(SpecialtyService specialtyService) {
+	public VetMapService(SpecialtyService specialtyService) {
 		super();
 		this.specialtyService = specialtyService;
 	}

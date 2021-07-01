@@ -13,5 +13,5 @@ import courses.sov.petclinic.service.PetService;
  *
  */
 @Service
-public class PetServiceMap extends AbstractMapCrudService<Pet, Long> implements PetService {
+public class PetMapService extends AbstractMapCrudService<Pet, Long> implements PetService {
 }
