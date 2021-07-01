@@ -15,10 +15,12 @@ import courses.sov.petclinic.model.Pet;
 import courses.sov.petclinic.model.PetType;
 import courses.sov.petclinic.model.Specialty;
 import courses.sov.petclinic.model.Vet;
+import courses.sov.petclinic.model.Visit;
 import courses.sov.petclinic.service.OwnerService;
 import courses.sov.petclinic.service.PetTypeService;
 import courses.sov.petclinic.service.SpecialtyService;
 import courses.sov.petclinic.service.VetService;
+import courses.sov.petclinic.service.VisitService;
 
 /**
  * @author dcividin
@@ -33,13 +35,15 @@ public class DataInitializer implements CommandLineRunner {
 	private final VetService vetService;
 	private final PetTypeService petTypeService;
 	private final SpecialtyService specialtyService;
+	private final VisitService visitService;
 	
 	public DataInitializer(OwnerService ownerService, VetService vetService, PetTypeService petTypeService,
-			SpecialtyService specialtyService) {
+			SpecialtyService specialtyService, VisitService visitService) {
 		this.ownerService = ownerService;
 		this.vetService = vetService;
 		this.petTypeService = petTypeService;
 		this.specialtyService = specialtyService;
+		this.visitService = visitService;
 	}
 
 	@Override
@@ -55,13 +59,12 @@ public class DataInitializer implements CommandLineRunner {
 		var dog = petTypeService.save( new PetType("Dog") );
 		var cat = petTypeService.save( new PetType("Cat") );
 		var horse = petTypeService.save( new PetType("Horse") );
-		
 		log.info("Loaded PetTypes.......");
 		
-		log.info("Loaded Specialties.......");
 		var radiology = specialtyService.save(new Specialty("Radiology"));
 		var surgery = specialtyService.save(new Specialty("Surgery"));
 		var dentistry = specialtyService.save(new Specialty("Dentistry"));
+		log.info("Loaded Specialties.......");
 		
 		var owner1 = new Owner();
 		owner1.setFirstName("Danilo");
@@ -110,6 +113,27 @@ public class DataInitializer implements CommandLineRunner {
 		ownerService.save(owner3);
 
 		log.info("Loaded Owners.......");
+		
+		var visitPet1 = new Visit()
+				.setDate(LocalDate.now())
+				.setDescription("Checkup")
+				.setPet(owner1Pet);
+		
+		var visitPet2 = new Visit()
+				.setDate(LocalDate.now())
+				.setDescription("Taglio unghie")
+				.setPet(owner2Pet);
+		
+		var visitPet3 = new Visit()
+				.setDate(LocalDate.now())
+				.setDescription("Controllo Generale")
+				.setPet(owner3Pet);
+
+		visitService.save(visitPet1);
+		visitService.save(visitPet2);
+		visitService.save(visitPet3);
+		
+		log.info("Loaded Visits.......");
 		
 		var vet1 = new Vet();
 		vet1.setFirstName("Paolo");
