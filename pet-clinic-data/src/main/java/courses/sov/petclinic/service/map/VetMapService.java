@@ -6,6 +6,7 @@ package courses.sov.petclinic.service.map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import courses.sov.petclinic.model.Vet;
@@ -17,6 +18,7 @@ import courses.sov.petclinic.service.VetService;
  *
  */
 @Service
+@Profile({"default", "map"})
 public class VetMapService extends AbstractMapCrudService<Vet, Long> implements VetService {
 	private final SpecialtyService specialtyService;
 	

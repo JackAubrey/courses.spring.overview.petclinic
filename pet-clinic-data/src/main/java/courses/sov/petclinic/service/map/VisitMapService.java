@@ -3,6 +3,7 @@
  */
 package courses.sov.petclinic.service.map;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import courses.sov.petclinic.model.Visit;
@@ -13,6 +14,7 @@ import courses.sov.petclinic.service.VisitService;
  *
  */
 @Service
+@Profile({"default", "map"})
 public class VisitMapService extends AbstractMapCrudService<Visit, Long> implements VisitService {
 
 	@Override

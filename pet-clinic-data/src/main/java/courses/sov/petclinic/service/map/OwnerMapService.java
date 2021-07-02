@@ -6,6 +6,7 @@ package courses.sov.petclinic.service.map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import courses.sov.petclinic.model.Owner;
@@ -18,6 +19,7 @@ import courses.sov.petclinic.service.PetTypeService;
  *
  */
 @Service
+@Profile({"default", "map"})
 public class OwnerMapService extends AbstractMapCrudService<Owner, Long> implements OwnerService {
 	private final PetService petService;
 	private final PetTypeService petTypeService;
