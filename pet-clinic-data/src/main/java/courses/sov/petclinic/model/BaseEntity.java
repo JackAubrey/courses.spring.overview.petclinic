@@ -10,10 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author dcividin
  *
  */
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 	/**
@@ -24,18 +29,4 @@ public abstract class BaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
 }

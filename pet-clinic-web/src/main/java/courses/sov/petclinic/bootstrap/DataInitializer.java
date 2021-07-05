@@ -73,10 +73,10 @@ public class DataInitializer implements CommandLineRunner {
 		owner1.setCity("Roma");
 		owner1.setTelephone("063090570");
 		
-		var owner1Pet = new Pet("Poldo")
-				.setBirthDate(LocalDate.now())
-				.setOwner(owner1)
-				.setType(dog);
+		var owner1Pet = Pet.builder().name("Poldo")
+				.birthDate(LocalDate.now())
+				.owner(owner1)
+				.type(dog).build();
 		
 		owner1.addPet(owner1Pet);
 		
@@ -87,10 +87,10 @@ public class DataInitializer implements CommandLineRunner {
 		owner2.setCity("Roma");
 		owner2.setTelephone("065790871");
 		
-		var owner2Pet = new Pet("Melody")
-				.setBirthDate(LocalDate.now())
-				.setOwner(owner2)
-				.setType(cat);
+		var owner2Pet = Pet.builder().name("Melody")
+				.birthDate(LocalDate.now())
+				.owner(owner2)
+				.type(cat).build();
 		
 		owner2.addPet(owner2Pet);
 		
@@ -101,10 +101,10 @@ public class DataInitializer implements CommandLineRunner {
 		owner3.setCity("Milano");
 		owner3.setTelephone("024091560");
 		
-		var owner3Pet = new Pet("Furia")
-				.setBirthDate(LocalDate.now())
-				.setOwner(owner3)
-				.setType(horse);
+		var owner3Pet = Pet.builder().name("Furia")
+				.birthDate(LocalDate.now())
+				.owner(owner3)
+				.type(horse).build();
 		
 		owner3.addPet(owner3Pet);
 		
@@ -114,20 +114,20 @@ public class DataInitializer implements CommandLineRunner {
 
 		log.info("Loaded Owners.......");
 		
-		var visitPet1 = new Visit()
-				.setDate(LocalDate.now())
-				.setDescription("Checkup")
-				.setPet(owner1Pet);
+		var visitPet1 = Visit.builder()
+				.date(LocalDate.now())
+				.description("Checkup")
+				.pet(owner1Pet).build();
 		
-		var visitPet2 = new Visit()
-				.setDate(LocalDate.now())
-				.setDescription("Taglio unghie")
-				.setPet(owner2Pet);
+		var visitPet2 = Visit.builder()
+				.date(LocalDate.now())
+				.description("Taglio unghie")
+				.pet(owner2Pet).build();
 		
-		var visitPet3 = new Visit()
-				.setDate(LocalDate.now())
-				.setDescription("Controllo Generale")
-				.setPet(owner3Pet);
+		var visitPet3 = Visit.builder()
+				.date(LocalDate.now())
+				.description("Controllo Generale")
+				.pet(owner3Pet).build();
 
 		visitService.save(visitPet1);
 		visitService.save(visitPet2);

@@ -13,10 +13,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author dcividin
  *
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "vets")
 public class Vet extends Person {
@@ -32,28 +37,19 @@ public class Vet extends Person {
 	private Set<Specialty> specialties = new HashSet<>();
 
 	/**
-	 * @return the specialties
-	 */
-	public Set<Specialty> getSpecialties() {
-		return specialties;
-	}
-
-	/**
 	 * @param specialties the specialties to set
 	 */
 	public void setSpecialties(Set<Specialty> specialties) {
-		this.specialties = specialties;
+		this.specialties = specialties == null ? new HashSet<>() : new HashSet<>(specialties);
 	}
 	
 	/**
 	 * 
-	 * @param e
+	 * @param specialty
 	 */
-	public void addSpecialty(Specialty e) {
-		if(this.specialties == null) {
-			this.specialties = new HashSet<>();
+	public void addSpecialty(Specialty specialty) {
+		if(specialty != null) {
+			this.specialties.add(specialty);
 		}
-		
-		this.specialties.add(e);
 	}
 }

@@ -8,10 +8,21 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @author dcividin
  *
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "specialties")
 public class Specialty extends BaseEntity {
@@ -23,33 +34,4 @@ public class Specialty extends BaseEntity {
 	@Column(name = "description")
 	@NotBlank(message = "Description may not be blank")
 	private String description;
-
-	/**
-	 * 
-	 */
-	public Specialty() {
-		super();
-	}
-	
-	/**
-	 * @param description
-	 */
-	public Specialty(String description) {
-		super();
-		this.description = description;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
 }

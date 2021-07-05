@@ -7,10 +7,15 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author dcividin
  *
  */
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class NamedEntity extends BaseEntity {
 	/**
@@ -21,19 +26,4 @@ public abstract class NamedEntity extends BaseEntity {
 	@Column(name = "name")
 	@NotBlank(message = "Name may not be blank")
 	private String name;
-
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
 }

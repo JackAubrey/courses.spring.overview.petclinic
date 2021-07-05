@@ -13,10 +13,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @author dcividin
  *
  */
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
@@ -40,47 +48,26 @@ public class Owner extends Person {
 	private Set<Pet> pets = new HashSet<>();
 	
 	/**
-	 * @return the address
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param address
+	 * @param city
+	 * @param telephone
+	 * @param pets
 	 */
-	public String getAddress() {
-		return address;
-	}
-	/**
-	 * @param address the address to set
-	 */
-	public void setAddress(String address) {
+	@Builder
+	public Owner(Long id, @NotBlank(message = "First Name may not be blank") String firstName,
+			@NotBlank(message = "Last Name may not be blank") String lastName, String address, String city,
+			@NotBlank(message = "Telephone may not be blank") String telephone, Set<Pet> pets) {
+		super(id, firstName, lastName);
 		this.address = address;
-	}
-	/**
-	 * @return the city
-	 */
-	public String getCity() {
-		return city;
-	}
-	/**
-	 * @param city the city to set
-	 */
-	public void setCity(String city) {
 		this.city = city;
-	}
-	/**
-	 * @return the telephone
-	 */
-	public String getTelephone() {
-		return telephone;
-	}
-	/**
-	 * @param telephone the telephone to set
-	 */
-	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+		this.pets = pets;
 	}
-	/**
-	 * @return the pets
-	 */
-	public Set<Pet> getPets() {
-		return pets;
-	}
+	
+	
 	/**
 	 * @param pets the pets to set
 	 */
@@ -92,10 +79,6 @@ public class Owner extends Person {
 	 * @param e
 	 */
 	public void addPet(Pet e) {
-		if(this.pets == null) {
-			this.pets = new HashSet<>();
-		}
-		
 		if(e != null) {
 			e.setOwner(this);
 			this.pets.add(e);

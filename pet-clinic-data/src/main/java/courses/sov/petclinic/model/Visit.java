@@ -12,10 +12,21 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @author dcividin
  *
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "visits")
 public class Visit extends BaseEntity {
@@ -34,45 +45,4 @@ public class Visit extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "pet_id")
 	private Pet pet;
-	
-	/**
-	 * @return the date
-	 */
-	public LocalDate getDate() {
-		return date;
-	}
-	/**
-	 * @param date the date to set
-	 */
-	public Visit setDate(LocalDate date) {
-		this.date = date;
-		return this;
-	}
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-	/**
-	 * @param description the description to set
-	 */
-	public Visit setDescription(String description) {
-		this.description = description;
-		return this;
-	}
-	/**
-	 * @return the pet
-	 */
-	public Pet getPet() {
-		return pet;
-	}
-	/**
-	 * @param pet the pet to set
-	 */
-	public Visit setPet(Pet pet) {
-		this.pet = pet;
-		return this;
-	}
-
 }

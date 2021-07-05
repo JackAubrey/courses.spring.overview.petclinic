@@ -15,10 +15,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @author dcividin
  *
  */
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "pets")
 public class Pet extends NamedEntity {
@@ -46,65 +54,24 @@ public class Pet extends NamedEntity {
 	
 	/**
 	 * 
-	 */
-	public Pet() {
-		super();
-	}
-	
-	/**
-	 * 
+	 * @param id
 	 * @param name
+	 * @param type
+	 * @param birthDate
+	 * @param owner
+	 * @param visits
 	 */
-	public Pet(String name) {
+	@Builder
+	public Pet(Long id, String name, PetType type, LocalDate birthDate, Owner owner, Set<Visit> visits) {
+		super();
+		this.setId(id);
 		this.setName(name);
+		this.type = type;
+		this.birthDate = birthDate;
+		this.owner = owner;
+		this.visits = visits;
 	}
 	
-	/**
-	 * @return the birthDate
-	 */
-	public LocalDate getBirthDate() {
-		return birthDate;
-	}
-	/**
-	 * @param birthDate the birthDate to set
-	 */
-	public Pet setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-		return this;
-	}
-	/**
-	 * @return the type
-	 */
-	public PetType getType() {
-		return type;
-	}
-	/**
-	 * @param type the type to set
-	 */
-	public Pet setType(PetType type) {
-		this.type = type;
-		return this;
-	}
-	/**
-	 * @return the owner
-	 */
-	public Owner getOwner() {
-		return owner;
-	}
-	/**
-	 * @param owner the owner to set
-	 */
-	public Pet setOwner(Owner owner) {
-		this.owner = owner;
-		return this;
-	}
-
-	/**
-	 * @return the visits
-	 */
-	public Set<Visit> getVisits() {
-		return visits;
-	}
 
 	/**
 	 * @param visits the visits to set
@@ -119,10 +86,6 @@ public class Pet extends NamedEntity {
 	 * @param visit the visit to set
 	 */
 	public void addVisit(Visit visit) {
-		if(this.visits == null) {
-			this.visits = new HashSet<>();
-		}
-		
 		if(visit != null) {
 			visit.setPet(this);
 			this.visits.add(visit);
