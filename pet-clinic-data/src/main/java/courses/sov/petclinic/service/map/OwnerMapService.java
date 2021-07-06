@@ -32,8 +32,13 @@ public class OwnerMapService extends AbstractMapCrudService<Owner, Long> impleme
 	
 	@Override
 	public Optional<Owner> findByLastName(String lastName) {
+		if( lastName == null || lastName.trim().isEmpty()) {
+			return Optional.empty();
+		}
+		
 		return map.entrySet()
-				.stream().filter(entry -> entry.getValue().getLastName().equals(lastName))
+				.stream()
+				.filter(entry -> entry.getValue().getLastName().equalsIgnoreCase(lastName.trim()))
 				.map(Entry::getValue)
 				.findFirst();
 	}
