@@ -6,6 +6,7 @@ package courses.sov.petclinic.model;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,19 @@ public class PetType extends NamedEntity {
 	 * @param name
 	 */
 	public PetType(String name) {
+		super();
+		this.setName(name);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 */
+	@Builder
+	public PetType(Long id, String name) {
+		super();
+		setId(id);
 		this.setName(name);
 	}
 }
