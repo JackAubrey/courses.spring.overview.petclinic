@@ -4,6 +4,7 @@
 package courses.sov.petclinic.service.jpa;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -75,4 +76,8 @@ public class OwnerJpaService implements OwnerService {
 		return ownerRepository.findByLastName(lastName);
 	}
 
+	@Override
+	public List<Owner> findAllByLastNameLike(String lastName) {
+		return ownerRepository.findAllByLastNameLike(lastName);
+	}
 }

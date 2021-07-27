@@ -8,8 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,8 @@ import courses.sov.petclinic.service.OwnerService;
 class OwnerMapServiceTest {
 	OwnerService ownerService;
 	
-	final Long defaultOwnerId = 1L;
+	AtomicLong sequence = new AtomicLong(1);
+	final Long defaultOwnerId = sequence.getAndIncrement();
 	final String defaultOwnerName = "Default Name";
 	final String defaultOwnerLastname = "Default Lastname";
 
@@ -40,6 +43,41 @@ class OwnerMapServiceTest {
 				.id(defaultOwnerId)
 				.firstName(defaultOwnerName)
 				.lastName(defaultOwnerLastname)
+				.pets(new HashSet<Pet>(Arrays.asList(pet)))
+				.build());
+		
+		ownerService.save(Owner.builder()
+				.id(sequence.getAndIncrement())
+				.firstName("Luca")
+				.lastName("Rossi")
+				.pets(new HashSet<Pet>(Arrays.asList(pet)))
+				.build());
+		
+		ownerService.save(Owner.builder()
+				.id(sequence.getAndIncrement())
+				.firstName("Maria")
+				.lastName("Verdi")
+				.pets(new HashSet<Pet>(Arrays.asList(pet)))
+				.build());
+		
+		ownerService.save(Owner.builder()
+				.id(sequence.getAndIncrement())
+				.firstName("Elisa")
+				.lastName("Neri")
+				.pets(new HashSet<Pet>(Arrays.asList(pet)))
+				.build());
+		
+		ownerService.save(Owner.builder()
+				.id(sequence.getAndIncrement())
+				.firstName("Elisa")
+				.lastName("Rossini")
+				.pets(new HashSet<Pet>(Arrays.asList(pet)))
+				.build());
+		
+		ownerService.save(Owner.builder()
+				.id(sequence.getAndIncrement())
+				.firstName("Paolo")
+				.lastName("Crossitti")
 				.pets(new HashSet<Pet>(Arrays.asList(pet)))
 				.build());
 	}
@@ -125,7 +163,7 @@ class OwnerMapServiceTest {
 		Set<Owner> list = assertDoesNotThrow( () -> ownerService.findAll());
 		
 		// then
-		assertEquals(1, list.size());
+		assertEquals(6, list.size());
 	}
 
 	@Test
@@ -183,7 +221,32 @@ class OwnerMapServiceTest {
 	void testCount() {
 		long count = assertDoesNotThrow( () -> ownerService.count());
 		
-		assertEquals(1, count);
+		assertEquals(6, count);
 	}
 
+	
+	@Test
+	void testAllFindByLastNameLike() {
+		// given
+		String nameToFindByLike = "Rossi";
+		
+		// when
+		List<Owner> owners = assertDoesNotThrow( () -> ownerService.findAllByLastNameLike(nameToFindByLike) );
+		
+		// then
+		assertTrue(!owners.isEmpty());
+		assertEquals(3, owners.size());
+	}
+	
+	@Test
+	void testAllFindByLastNameLikeNotFound() {
+		// given
+		String nameToFindByLike = "Marroncino";
+		
+		// when
+		List<Owner> owners = assertDoesNotThrow( () -> ownerService.findAllByLastNameLike(nameToFindByLike) );
+		
+		// then
+		assertTrue(owners.isEmpty());
+	}
 }

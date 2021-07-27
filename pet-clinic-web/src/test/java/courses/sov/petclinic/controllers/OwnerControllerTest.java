@@ -5,16 +5,20 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -41,6 +45,7 @@ class OwnerControllerTest {
 	
 	MockMvc mockMvc;
 	Set<Owner> owners;
+	List<Owner> ownersWithSimilarlastName = new ArrayList<>();
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -58,6 +63,7 @@ class OwnerControllerTest {
 		
 		owners.add(Owner.builder()
 				.id(2L)
+				.firstName("John")
 				.lastName("McGuinness")
 				.telephone("333-1234567")
 				.pets( new HashSet<Pet>(Arrays.asList(Pet.builder()
@@ -65,6 +71,41 @@ class OwnerControllerTest {
 						.type(new PetType("dog"))
 						.build())) )
 				.build());
+		
+		ownersWithSimilarlastName.add(Owner.builder()
+				.id(2L)
+				.firstName("Joey")
+				.lastName("Dunlop")
+				.telephone("333-1234568")
+				.pets( new HashSet<Pet>(Arrays.asList(Pet.builder()
+						.id(21L)
+						.type(new PetType("dog"))
+						.build())) )
+				.build());
+		
+		ownersWithSimilarlastName.add(Owner.builder()
+				.id(2L)
+				.firstName("Michael")
+				.lastName("Dunlops")
+				.telephone("333-1234569")
+				.pets( new HashSet<Pet>(Arrays.asList(Pet.builder()
+						.id(21L)
+						.type(new PetType("dog"))
+						.build())) )
+				.build());
+		
+		ownersWithSimilarlastName.add(Owner.builder()
+				.id(2L)
+				.firstName("Michael")
+				.lastName("Todunloping")
+				.telephone("333-1234570")
+				.pets( new HashSet<Pet>(Arrays.asList(Pet.builder()
+						.id(21L)
+						.type(new PetType("dog"))
+						.build())) )
+				.build());
+		
+		owners.addAll(ownersWithSimilarlastName);
 		
 		mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
 	}
@@ -79,7 +120,7 @@ class OwnerControllerTest {
 		assertDoesNotThrow( () -> mockMvc.perform(get("/owners"+value))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("owners"))
-			.andExpect(model().attribute("owners", hasSize(2)))
+			.andExpect(model().attribute("owners", hasSize(owners.size())))
 			.andExpect(view().name("owners/index")) 
 		);
 		
@@ -91,18 +132,16 @@ class OwnerControllerTest {
 	@Test
 	void testFindOwners() {
 		// given
-		given(ownerService.findAll()).willReturn(owners);
 		
 		// when
 		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/find"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("owners"))
-			.andExpect(view().name("owners/ownersList")) 
+			.andExpect(model().attributeExists("owner"))
+			.andExpect(view().name("owners/findOwners")) 
 		);
 		
 		// then
-		verify(ownerService).findAll();
-		verifyNoMoreInteractions(ownerService);
+		verifyNoInteractions(ownerService);
 	}
 	
 	@Test
@@ -121,6 +160,68 @@ class OwnerControllerTest {
 		
 		// then
 		verify(ownerService).findById(anyLong());
+		verifyNoMoreInteractions(ownerService);
+	}
+	
+	@Test
+	void testHandleFindFormNotFound() {
+		// given
+		given(ownerService.findAllByLastNameLike(anyString())).willReturn(new ArrayList<>());
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/doFind"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeDoesNotExist("owners"))
+			.andExpect(view().name("owners/findOwners")) 
+		);
+		
+		// then
+		verify(ownerService).findAllByLastNameLike(anyString());
+		verifyNoMoreInteractions(ownerService);
+	}
+	
+	@Test
+	void testHandleFindFormOneResult() {
+		// given
+		Owner example = Owner.builder()
+				.id(2L)
+				.firstName("Michael")
+				.lastName("Todunloping")
+				.telephone("333-1234570")
+				.pets( new HashSet<Pet>(Arrays.asList(Pet.builder()
+						.id(21L)
+						.type(new PetType("dog"))
+						.build())) )
+				.build();
+		
+		given(ownerService.findAllByLastNameLike(anyString())).willReturn(Arrays.asList(example));
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/doFind"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(model().attributeExists("owner"))
+			.andExpect(view().name("redirect:/owners/"+example.getId())) 
+		);
+		
+		// then
+		verify(ownerService).findAllByLastNameLike(anyString());
+		verifyNoMoreInteractions(ownerService);
+	}
+	
+	@Test
+	void testHandleFindFormManyResults() {
+		// given
+		given(ownerService.findAllByLastNameLike(anyString())).willReturn(ownersWithSimilarlastName);
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/doFind"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("owners"))
+			.andExpect(view().name("owners/ownersList")) 
+		);
+		
+		// then
+		verify(ownerService).findAllByLastNameLike(anyString());
 		verifyNoMoreInteractions(ownerService);
 	}
 }

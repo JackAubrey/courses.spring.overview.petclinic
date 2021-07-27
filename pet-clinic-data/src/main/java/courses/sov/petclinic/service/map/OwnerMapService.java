@@ -3,8 +3,11 @@
  */
 package courses.sov.petclinic.service.map;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -70,5 +73,18 @@ public class OwnerMapService extends AbstractMapCrudService<Owner, Long> impleme
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<Owner> findAllByLastNameLike(String lastName) {
+		if( lastName == null || lastName.trim().isEmpty()) {
+			return new ArrayList<>();
+		}
+		
+		return map.entrySet()
+				.stream()
+				.filter(entry -> entry.getValue().getLastName().toLowerCase().contains(lastName.trim().toLowerCase()))
+				.map(Entry::getValue)
+				.collect(Collectors.toList());
 	}
 }
