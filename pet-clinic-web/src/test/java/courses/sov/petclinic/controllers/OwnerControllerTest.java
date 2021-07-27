@@ -1,10 +1,12 @@
 package courses.sov.petclinic.controllers;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -13,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -88,14 +91,36 @@ class OwnerControllerTest {
 	@Test
 	void testFindOwners() {
 		// given
+		given(ownerService.findAll()).willReturn(owners);
 		
 		// when
 		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/find"))
 			.andExpect(status().isOk())
-			.andExpect(view().name("notimplemented")) 
+			.andExpect(model().attributeExists("owners"))
+			.andExpect(view().name("owners/ownersList")) 
 		);
 		
 		// then
-		verifyNoInteractions(ownerService);
+		verify(ownerService).findAll();
+		verifyNoMoreInteractions(ownerService);
+	}
+	
+	@Test
+	void testGetOwner() {
+		// given
+		Optional<Owner> owner = owners.stream().findFirst();
+		given(ownerService.findById(anyLong())).willReturn(owner);
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/1"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("owner"))
+			.andExpect(model().attribute("owner", hasProperty("id", is(owner.get().getId()))))
+			.andExpect(view().name("owners/ownerDetails")) 
+		);
+		
+		// then
+		verify(ownerService).findById(anyLong());
+		verifyNoMoreInteractions(ownerService);
 	}
 }
