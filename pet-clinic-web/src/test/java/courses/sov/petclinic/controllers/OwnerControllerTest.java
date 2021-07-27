@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -37,6 +38,7 @@ import courses.sov.petclinic.model.Owner;
 import courses.sov.petclinic.model.Pet;
 import courses.sov.petclinic.model.PetType;
 import courses.sov.petclinic.service.OwnerService;
+import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
@@ -222,6 +224,108 @@ class OwnerControllerTest {
 		
 		// then
 		verify(ownerService).findAllByLastNameContainingIgnoreCase(anyString());
+		verifyNoMoreInteractions(ownerService);
+	}
+	
+	@Test
+	void testInitCreatOwnerForm() {
+		// given
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/new"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("owner"))
+				.andExpect(view().name("owners/createOrUpdateOwnerForm")) 
+			);
+		
+		// then
+		verifyNoInteractions(ownerService);
+	}
+	
+	@Test
+	void testProcessCreatOwnerForm() {
+		// given
+		Long ownerId = 1L;
+		Owner owner = Owner.builder()
+				.id(ownerId)
+				.firstName("Michael")
+				.lastName("Todunloping")
+				.telephone("333-1234570")
+				.build();
+		
+		given(ownerService.save(any(Owner.class))).willReturn(owner);
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform( MockMvcRequestBuilderUtils.postForm("/owners/new", owner) )
+				.andExpect(status().is3xxRedirection())
+				.andExpect(model().attributeExists("owner"))
+				.andExpect(view().name("redirect:/owners/"+ownerId)) 
+			);
+		
+		// then
+		verify(ownerService).save(any(Owner.class));
+		verifyNoMoreInteractions(ownerService);
+	}
+	
+	@Test
+	void testInitUpdateOwnerForm() {
+		// given
+		Long ownerId = 3L;
+		Optional<Owner> owner = Optional.of(Owner.builder()
+				.id(2L)
+				.firstName("Michael")
+				.lastName("Todunloping")
+				.telephone("333-1234570")
+				.build());
+		
+		given(ownerService.findById(anyLong())).willReturn(owner);
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform( get("/owners/"+ownerId+"/update") )
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("owner"))
+				.andExpect(view().name("owners/createOrUpdateOwnerForm")) 
+			);
+		
+		// then
+		verify(ownerService).findById(anyLong());
+		verifyNoMoreInteractions(ownerService);
+	}
+	
+	@Test
+	void testProcessUpdateOwnerForm() {
+		// given
+		Long ownerId = 6L;
+		
+		Owner ownerSaved = Owner.builder()
+				.id(ownerId)
+				.firstName("Michael")
+				.lastName("Dunlopp")
+				.telephone("333-666666666")
+				.build();
+		
+		Optional<Owner> owner = Optional.of(Owner.builder()
+				.id(ownerId)
+				.firstName("Michael")
+				.lastName("Todunloping")
+				.telephone("333-1234570")
+				.build());
+		
+		given(ownerService.findById(anyLong())).willReturn(owner);
+		given(ownerService.save(any(Owner.class))).willReturn(ownerSaved);
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform( MockMvcRequestBuilderUtils.postForm("/owners/"+owner.get().getId()+"/update", owner.get()) )
+				.andExpect(status().is3xxRedirection())
+				.andExpect(model().attributeExists("owner"))
+				.andExpect(model().attribute("owner", hasProperty("id", is(ownerSaved.getId()))))
+				.andExpect(model().attribute("owner", hasProperty("lastName", is(ownerSaved.getLastName()))))
+				.andExpect(view().name("redirect:/owners/"+owner.get().getId()))  
+			);
+		
+		// then
+		verify(ownerService).findById(anyLong());
+		verify(ownerService).save(any(Owner.class));
 		verifyNoMoreInteractions(ownerService);
 	}
 }
