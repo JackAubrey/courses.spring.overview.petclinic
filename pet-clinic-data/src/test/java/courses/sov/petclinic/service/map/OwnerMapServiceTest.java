@@ -226,12 +226,12 @@ class OwnerMapServiceTest {
 
 	
 	@Test
-	void testAllFindByLastNameLike() {
+	void testFindAllByLastNameContainingIgnoreCase() {
 		// given
 		String nameToFindByLike = "Rossi";
 		
 		// when
-		List<Owner> owners = assertDoesNotThrow( () -> ownerService.findAllByLastNameLike(nameToFindByLike) );
+		List<Owner> owners = assertDoesNotThrow( () -> ownerService.findAllByLastNameContainingIgnoreCase(nameToFindByLike) );
 		
 		// then
 		assertTrue(!owners.isEmpty());
@@ -239,12 +239,12 @@ class OwnerMapServiceTest {
 	}
 	
 	@Test
-	void testAllFindByLastNameLikeNotFound() {
+	void testFindAllByLastNameContainingIgnoreCaseNotFound() {
 		// given
 		String nameToFindByLike = "Marroncino";
 		
 		// when
-		List<Owner> owners = assertDoesNotThrow( () -> ownerService.findAllByLastNameLike(nameToFindByLike) );
+		List<Owner> owners = assertDoesNotThrow( () -> ownerService.findAllByLastNameContainingIgnoreCase(nameToFindByLike) );
 		
 		// then
 		assertTrue(owners.isEmpty());

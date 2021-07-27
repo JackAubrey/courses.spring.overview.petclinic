@@ -54,7 +54,7 @@ public class OwnerController {
 	public String handleFindForm(Owner owner, BindingResult result, Model model) {
 		String lastname = owner == null || owner.getLastName() == null ? "" : owner.getLastName();
 		
-		List<Owner> ownersFound = service.findAllByLastNameLike(lastname);
+		List<Owner> ownersFound = service.findAllByLastNameContainingIgnoreCase(lastname);
 		
 		if(ownersFound.isEmpty()) {
 			result.rejectValue("lastName", "notFound", "not found");
