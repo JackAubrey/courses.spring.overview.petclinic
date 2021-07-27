@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Builder;
@@ -61,10 +62,10 @@ public class Owner extends Person {
 			@NotBlank(message = "Last Name may not be blank") String lastName, String address, String city,
 			@NotBlank(message = "Telephone may not be blank") String telephone, Set<Pet> pets) {
 		super(id, firstName, lastName);
-		this.address = address;
-		this.city = city;
-		this.telephone = telephone;
-		this.pets = pets;
+		setAddress(address);
+		setCity(city);
+		setTelephone(telephone);
+		setPets(pets);
 	}
 	
 	
@@ -83,5 +84,15 @@ public class Owner extends Person {
 			e.setOwner(this);
 			this.pets.add(e);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param pet
+	 * @return
+	 */
+	public boolean contains(@Valid Pet pet) {
+		return getPets().stream()
+				.anyMatch( p -> p.getName().trim().equalsIgnoreCase(pet.getName().trim()));
 	}
 }

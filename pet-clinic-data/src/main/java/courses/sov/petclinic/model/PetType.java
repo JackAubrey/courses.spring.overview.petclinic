@@ -48,4 +48,9 @@ public class PetType extends NamedEntity {
 		setId(id);
 		this.setName(name);
 	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
 }
