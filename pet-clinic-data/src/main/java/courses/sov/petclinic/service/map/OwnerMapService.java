@@ -76,7 +76,7 @@ public class OwnerMapService extends AbstractMapCrudService<Owner, Long> impleme
 	}
 
 	@Override
-	public List<Owner> findAllByLastNameLike(String lastName) {
+	public List<Owner> findAllByLastNameContainingIgnoreCase(String lastName) {
 		if( lastName == null || lastName.trim().isEmpty()) {
 			return new ArrayList<>();
 		}

@@ -166,7 +166,7 @@ class OwnerControllerTest {
 	@Test
 	void testHandleFindFormNotFound() {
 		// given
-		given(ownerService.findAllByLastNameLike(anyString())).willReturn(new ArrayList<>());
+		given(ownerService.findAllByLastNameContainingIgnoreCase(anyString())).willReturn(new ArrayList<>());
 		
 		// when
 		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/doFind"))
@@ -176,7 +176,7 @@ class OwnerControllerTest {
 		);
 		
 		// then
-		verify(ownerService).findAllByLastNameLike(anyString());
+		verify(ownerService).findAllByLastNameContainingIgnoreCase(anyString());
 		verifyNoMoreInteractions(ownerService);
 	}
 	
@@ -194,7 +194,7 @@ class OwnerControllerTest {
 						.build())) )
 				.build();
 		
-		given(ownerService.findAllByLastNameLike(anyString())).willReturn(Arrays.asList(example));
+		given(ownerService.findAllByLastNameContainingIgnoreCase(anyString())).willReturn(Arrays.asList(example));
 		
 		// when
 		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/doFind"))
@@ -204,14 +204,14 @@ class OwnerControllerTest {
 		);
 		
 		// then
-		verify(ownerService).findAllByLastNameLike(anyString());
+		verify(ownerService).findAllByLastNameContainingIgnoreCase(anyString());
 		verifyNoMoreInteractions(ownerService);
 	}
 	
 	@Test
 	void testHandleFindFormManyResults() {
 		// given
-		given(ownerService.findAllByLastNameLike(anyString())).willReturn(ownersWithSimilarlastName);
+		given(ownerService.findAllByLastNameContainingIgnoreCase(anyString())).willReturn(ownersWithSimilarlastName);
 		
 		// when
 		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/doFind"))
@@ -221,7 +221,7 @@ class OwnerControllerTest {
 		);
 		
 		// then
-		verify(ownerService).findAllByLastNameLike(anyString());
+		verify(ownerService).findAllByLastNameContainingIgnoreCase(anyString());
 		verifyNoMoreInteractions(ownerService);
 	}
 }

@@ -17,5 +17,5 @@ import courses.sov.petclinic.model.Owner;
 public interface OwnerRepository extends CrudRepository<Owner, Long> {
 	Optional<Owner> findByLastName(String lastName);
 	
-	List<Owner> findAllByLastNameLike(String lastName);
+	List<Owner> findAllByLastNameContainingIgnoreCase(String lastName);
 }
