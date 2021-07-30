@@ -64,12 +64,12 @@ public class Pet extends NamedEntity {
 	@Builder
 	public Pet(Long id, String name, PetType type, LocalDate birthDate, Owner owner, Set<Visit> visits) {
 		super();
-		this.setId(id);
-		this.setName(name);
-		this.type = type;
-		this.birthDate = birthDate;
-		this.owner = owner;
-		this.visits = visits;
+		setId(id);
+		setName(name);
+		setType(type);
+		setBirthDate(birthDate);;
+		setOwner(owner);
+		setVisits(visits);
 	}
 	
 
