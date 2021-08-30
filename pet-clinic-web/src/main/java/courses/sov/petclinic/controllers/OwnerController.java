@@ -8,20 +8,15 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import courses.sov.petclinic.exceptions.BadRequestException;
@@ -36,8 +31,6 @@ import courses.sov.petclinic.service.OwnerService;
 @Controller
 @RequestMapping("/owners")
 public class OwnerController {
-	private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
-
 	private static final String ERR_MSG_NOT_FOUND_THE_OWNER_ID = "Not found the owner id: ";
 	
 	private static final String VIEW_OWNERS_OWNER_DETAILS = "owners/ownerDetails";
@@ -153,24 +146,5 @@ public class OwnerController {
 		} catch(NumberFormatException e) {
 			throw new BadRequestException("The Owner ID must to be a number. Unable to use the value ["+sId+"]", e);
 		}
-	}
-	
-	// since @ExceptionHandler has the precedence, I have to annotate it again with @ResponseStatus
-	@ResponseStatus(code = HttpStatus.NOT_FOUND)
-	@ExceptionHandler(NotFoundException.class)
-	public String handleNotFoundException(Model model, NotFoundException exception) {
-		log.error(exception.getLocalizedMessage());
-		model.addAttribute("error_type", "Not Found Exception");
-		model.addAttribute("error_message", exception.getLocalizedMessage());
-		return "/errors/404error";
-	}
-	
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(BadRequestException.class)
-	public String handleBadRequestException(Model model, BadRequestException exception) {
-		log.error(exception.getLocalizedMessage());
-		model.addAttribute("error_type", "Bad Request Exception");
-		model.addAttribute("error_message", exception.getLocalizedMessage());
-		return "/errors/400error";
 	}
 }
