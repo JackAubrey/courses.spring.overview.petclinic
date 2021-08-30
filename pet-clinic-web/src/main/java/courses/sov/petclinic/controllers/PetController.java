@@ -95,13 +95,13 @@ public class PetController {
 	}
 	
 	@PostMapping("/pets/{id}/update")
-	public String handelUpdatePetForm(Owner owner, @Valid Pet pet, BindingResult result, Model model) {
+	public String handelUpdatePetForm(@PathVariable Long id, Owner owner, @Valid Pet pet, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			pet.setOwner(owner);
 			model.addAttribute("pet", pet);
 			return VIEW_CREATE_OR_UPDATE_PET;
 		} else {
-			var savedPet = petService.findById(pet.getId()).orElseThrow( () -> new RuntimeException("Pet not found"));
+			var savedPet = petService.findById(id).orElseThrow( () -> new RuntimeException("Pet not found"));
 			savedPet.setBirthDate(pet.getBirthDate());
 			savedPet.setName(pet.getName());
 			savedPet.setType(pet.getType());

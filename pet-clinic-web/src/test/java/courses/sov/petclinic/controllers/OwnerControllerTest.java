@@ -166,6 +166,34 @@ class OwnerControllerTest {
 	}
 	
 	@Test
+	void testGetOwnerNotFound() {
+		// given
+		given(ownerService.findById(anyLong())).willReturn(Optional.empty());
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/1"))
+			.andExpect(status().isNotFound()) 
+		);
+		
+		// then
+		verify(ownerService).findById(anyLong());
+		verifyNoMoreInteractions(ownerService);
+	}
+	
+	@Test
+	void testGetOwnerNumberFormatException() {
+		// given
+		
+		// when
+		assertDoesNotThrow( () -> mockMvc.perform(get("/owners/abc"))
+			.andExpect(status().isBadRequest()) 
+		);
+		
+		// then
+		verifyNoInteractions(ownerService);
+	}
+	
+	@Test
 	void testHandleFindFormNotFound() {
 		// given
 		given(ownerService.findAllByLastNameContainingIgnoreCase(anyString())).willReturn(new ArrayList<>());

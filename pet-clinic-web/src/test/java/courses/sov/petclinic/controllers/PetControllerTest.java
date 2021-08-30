@@ -136,9 +136,7 @@ class PetControllerTest {
 		// when
 		assertDoesNotThrow( () -> mockMvc.perform( MockMvcRequestBuilderUtils.postForm("/owners/"+owner.getId()+"/pets/new", pet) )
 				.andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/owners/"+owner.getId()))
-				.andExpect(model().attributeExists("pet"))
-				.andExpect(model().attribute("pet", hasProperty("id", is(petId)))));
+				.andExpect(view().name("redirect:/owners/"+owner.getId())));
 		
 		// then
 		verify(ownerService).findById(anyLong());
@@ -157,7 +155,7 @@ class PetControllerTest {
 	void testHandelUpdatePetForm() {
 		// given
 		Long petId = 1L;
-		Pet pet = Pet.builder().id(petId).name("foo").build();
+		Pet pet = Pet.builder().id(petId).name("foo2").build();
 		given(ownerService.findById(anyLong())).willReturn(Optional.of(owner));
 		given(petTypeService.findAll()).willReturn(petTypes);
 		given(petService.findById(anyLong())).willReturn( Optional.of( Pet.builder().id(petId).build() ));
@@ -165,9 +163,7 @@ class PetControllerTest {
 		// when
 		assertDoesNotThrow( () -> mockMvc.perform( MockMvcRequestBuilderUtils.postForm("/owners/"+owner.getId()+"/pets/"+petId+"/update", pet) )
 				.andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/owners/"+owner.getId()))
-				.andExpect(model().attributeExists("pet"))
-				.andExpect(model().attribute("pet", hasProperty("id", is(petId)))));
+				.andExpect(view().name("redirect:/owners/"+owner.getId())));
 		
 		// then
 		verify(ownerService).findById(anyLong());

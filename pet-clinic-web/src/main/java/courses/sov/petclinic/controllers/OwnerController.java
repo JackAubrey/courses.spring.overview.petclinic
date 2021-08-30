@@ -8,17 +8,24 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import courses.sov.petclinic.exceptions.BadRequestException;
+import courses.sov.petclinic.exceptions.NotFoundException;
 import courses.sov.petclinic.model.Owner;
 import courses.sov.petclinic.service.OwnerService;
 
@@ -29,7 +36,19 @@ import courses.sov.petclinic.service.OwnerService;
 @Controller
 @RequestMapping("/owners")
 public class OwnerController {
+	private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
+
+	private static final String ERR_MSG_NOT_FOUND_THE_OWNER_ID = "Not found the owner id: ";
+	
+	private static final String VIEW_OWNERS_OWNER_DETAILS = "owners/ownerDetails";
+	private static final String VIEW_OWNERS_OWNERS_LIST = "owners/ownersList";
+	private static final String VIEW_REDIRECT_OWNERS = "redirect:/owners/";
+	private static final String VIEW_OWNERS_FIND_OWNERS = "owners/findOwners";
 	public static final String VIEW_NAME_OWNERS_CREATE_OR_UPDATE_OWNER_FORM = "owners/createOrUpdateOwnerForm";
+	
+	private static final String MODEL_ATTR_OWNERS = "owners";
+	private static final String MODEL_ATTR_OWNER = "owner";
+	
 	private final OwnerService service;
 	
 	public OwnerController(OwnerService service) {
@@ -43,16 +62,16 @@ public class OwnerController {
 	
 	@GetMapping({"", "/", "/index", "/index.html"})
 	public String listOwners(Model model) {
-		model.addAttribute("owners", service.findAll());
+		model.addAttribute(MODEL_ATTR_OWNERS, service.findAll());
 		
 		return "owners/index";
 	}
 	
 	@GetMapping("/find")
 	public String findOwners(Model model) {
-		model.addAttribute("owner", new Owner());
+		model.addAttribute(MODEL_ATTR_OWNER, new Owner());
 		
-		return "owners/findOwners";
+		return VIEW_OWNERS_FIND_OWNERS;
 	}
 	
 	@GetMapping("/doFind")
@@ -63,26 +82,26 @@ public class OwnerController {
 		
 		if(ownersFound.isEmpty()) {
 			result.rejectValue("lastName", "notFound", "not found");
-			return "owners/findOwners";
+			return VIEW_OWNERS_FIND_OWNERS;
 		} else if(ownersFound.size() == 1) {
-			return "redirect:/owners/"+ownersFound.iterator().next().getId();
+			return VIEW_REDIRECT_OWNERS+ownersFound.iterator().next().getId();
 		} else {
-			model.addAttribute("owners", ownersFound);
-			return "owners/ownersList";
+			model.addAttribute(MODEL_ATTR_OWNERS, ownersFound);
+			return VIEW_OWNERS_OWNERS_LIST;
 		}
 	}
 	
 	@GetMapping("/{id}")
-	public ModelAndView getOwner(@PathVariable Long id, Model model) {
-		var mav = new ModelAndView("owners/ownerDetails");
-		mav.addObject("owner", service.findById(id).orElseThrow( () -> new RuntimeException("not found")));
+	public ModelAndView getOwner(@PathVariable String id, Model model) {
+		var mav = new ModelAndView(VIEW_OWNERS_OWNER_DETAILS);
+		mav.addObject(MODEL_ATTR_OWNER, service.findById(toLong(id)).orElseThrow( () -> new NotFoundException(ERR_MSG_NOT_FOUND_THE_OWNER_ID+id)));
 		
 		return mav;
 	}
 	
 	@GetMapping("/new")
 	public String initCreatOwnerForm(Model model) {
-		model.addAttribute("owner", new Owner());
+		model.addAttribute(MODEL_ATTR_OWNER, new Owner());
 		
 		return VIEW_NAME_OWNERS_CREATE_OR_UPDATE_OWNER_FORM;
 	}
@@ -94,27 +113,27 @@ public class OwnerController {
 		}
 		
 		var savedOwner = service.save(owner);
-		model.addAttribute("owner", savedOwner);
+		model.addAttribute(MODEL_ATTR_OWNER, savedOwner);
 		
-		return "redirect:/owners/"+savedOwner.getId();
+		return VIEW_REDIRECT_OWNERS+savedOwner.getId();
 	}
 	
 	@GetMapping("/{id}/update")
-	public String initUpdateOwnerForm(@PathVariable Long id, Model model) {
-		Optional<Owner> owner = service.findById(id);
+	public String initUpdateOwnerForm(@PathVariable String id, Model model) {
+		Optional<Owner> owner = service.findById(toLong(id));
 		
-		model.addAttribute("owner", owner.orElseThrow( () -> new RuntimeException("Not found")));
+		model.addAttribute(MODEL_ATTR_OWNER, owner.orElseThrow( () -> new NotFoundException(ERR_MSG_NOT_FOUND_THE_OWNER_ID+id)));
 		
 		return VIEW_NAME_OWNERS_CREATE_OR_UPDATE_OWNER_FORM;
 	}
 	
 	@PostMapping("/{id}/update")
-	public String processUpdateOwnerForm(@PathVariable Long id, @Valid Owner owner, BindingResult result, Model model) {
+	public String processUpdateOwnerForm(@PathVariable String id, @Valid Owner owner, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			return VIEW_NAME_OWNERS_CREATE_OR_UPDATE_OWNER_FORM;
 		}
 		
-		var ownerToUpdate = service.findById(id).orElseThrow( () -> new RuntimeException("Not found"));
+		var ownerToUpdate = service.findById(toLong(id)).orElseThrow( () -> new NotFoundException(ERR_MSG_NOT_FOUND_THE_OWNER_ID+id));
 		
 		ownerToUpdate.setAddress(owner.getAddress());
 		ownerToUpdate.setCity(owner.getCity());
@@ -123,8 +142,35 @@ public class OwnerController {
 		ownerToUpdate.setTelephone(owner.getTelephone());
 		
 		var savedOwner = service.save(ownerToUpdate);
-		model.addAttribute("owner", savedOwner);
+		model.addAttribute(MODEL_ATTR_OWNER, savedOwner);
 		
-		return "redirect:/owners/"+savedOwner.getId();
+		return VIEW_REDIRECT_OWNERS+savedOwner.getId();
+	}
+	
+	private Long toLong(String sId) {
+		try {
+			return Long.valueOf(sId);
+		} catch(NumberFormatException e) {
+			throw new BadRequestException("The Owner ID must to be a number. Unable to use the value ["+sId+"]", e);
+		}
+	}
+	
+	// since @ExceptionHandler has the precedence, I have to annotate it again with @ResponseStatus
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(NotFoundException.class)
+	public String handleNotFoundException(Model model, NotFoundException exception) {
+		log.error(exception.getLocalizedMessage());
+		model.addAttribute("error_type", "Not Found Exception");
+		model.addAttribute("error_message", exception.getLocalizedMessage());
+		return "/errors/404error";
+	}
+	
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(BadRequestException.class)
+	public String handleBadRequestException(Model model, BadRequestException exception) {
+		log.error(exception.getLocalizedMessage());
+		model.addAttribute("error_type", "Bad Request Exception");
+		model.addAttribute("error_message", exception.getLocalizedMessage());
+		return "/errors/400error";
 	}
 }
