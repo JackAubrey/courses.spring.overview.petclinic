@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import courses.sov.petclinic.exceptions.BadRequestException;
 import courses.sov.petclinic.exceptions.NotFoundException;
 import courses.sov.petclinic.model.Owner;
 import courses.sov.petclinic.service.OwnerService;
@@ -87,7 +86,7 @@ public class OwnerController {
 	@GetMapping("/{id}")
 	public ModelAndView getOwner(@PathVariable String id, Model model) {
 		var mav = new ModelAndView(VIEW_OWNERS_OWNER_DETAILS);
-		mav.addObject(MODEL_ATTR_OWNER, service.findById(toLong(id)).orElseThrow( () -> new NotFoundException(ERR_MSG_NOT_FOUND_THE_OWNER_ID+id)));
+		mav.addObject(MODEL_ATTR_OWNER, service.findById(Utils.toLong(id)).orElseThrow( () -> new NotFoundException(ERR_MSG_NOT_FOUND_THE_OWNER_ID+id)));
 		
 		return mav;
 	}
@@ -113,7 +112,7 @@ public class OwnerController {
 	
 	@GetMapping("/{id}/update")
 	public String initUpdateOwnerForm(@PathVariable String id, Model model) {
-		Optional<Owner> owner = service.findById(toLong(id));
+		Optional<Owner> owner = service.findById(Utils.toLong(id));
 		
 		model.addAttribute(MODEL_ATTR_OWNER, owner.orElseThrow( () -> new NotFoundException(ERR_MSG_NOT_FOUND_THE_OWNER_ID+id)));
 		
@@ -126,7 +125,7 @@ public class OwnerController {
 			return VIEW_NAME_OWNERS_CREATE_OR_UPDATE_OWNER_FORM;
 		}
 		
-		var ownerToUpdate = service.findById(toLong(id)).orElseThrow( () -> new NotFoundException(ERR_MSG_NOT_FOUND_THE_OWNER_ID+id));
+		var ownerToUpdate = service.findById(Utils.toLong(id)).orElseThrow( () -> new NotFoundException(ERR_MSG_NOT_FOUND_THE_OWNER_ID+id));
 		
 		ownerToUpdate.setAddress(owner.getAddress());
 		ownerToUpdate.setCity(owner.getCity());
@@ -138,13 +137,5 @@ public class OwnerController {
 		model.addAttribute(MODEL_ATTR_OWNER, savedOwner);
 		
 		return VIEW_REDIRECT_OWNERS+savedOwner.getId();
-	}
-	
-	private Long toLong(String sId) {
-		try {
-			return Long.valueOf(sId);
-		} catch(NumberFormatException e) {
-			throw new BadRequestException("The Owner ID must to be a number. Unable to use the value ["+sId+"]", e);
-		}
 	}
 }

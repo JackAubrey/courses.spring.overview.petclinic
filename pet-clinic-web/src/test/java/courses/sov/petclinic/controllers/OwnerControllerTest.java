@@ -109,7 +109,9 @@ class OwnerControllerTest {
 		
 		owners.addAll(ownersWithSimilarlastName);
 		
-		mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(ownerController)
+				.setControllerAdvice(ControllerExceptionHandler.class)
+				.build();
 	}
 
 	@ParameterizedTest
