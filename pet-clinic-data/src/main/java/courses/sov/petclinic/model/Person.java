@@ -6,6 +6,7 @@ package courses.sov.petclinic.model;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,8 +35,13 @@ public class Person extends BaseEntity {
 	 * @param firstName
 	 * @param lastName
 	 */
-	public Person(Long id, @NotBlank(message = "First Name may not be blank") String firstName,
-			@NotBlank(message = "Last Name may not be blank") String lastName) {
+	public Person(Long id, 
+			@NotBlank(message = "First Name may not be blank")
+			@Size(min = 3, max = 255)
+				String firstName,
+			@NotBlank(message = "Last Name may not be blank")
+			@Size(min = 3, max = 255)
+				String lastName) {
 		super();
 		this.setId(id);
 		this.firstName = firstName;
@@ -44,9 +50,11 @@ public class Person extends BaseEntity {
 
 	@Column(name = "first_name")
 	@NotBlank(message = "First Name may not be blank")
+	@Size(min = 3, max = 255)
 	private String firstName;
 	
 	@Column(name = "last_name")
 	@NotBlank(message = "Last Name may not be blank")
+	@Size(min = 3, max = 255)
 	private String lastName;
 }
