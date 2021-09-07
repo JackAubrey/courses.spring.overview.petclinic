@@ -12,6 +12,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,6 +38,9 @@ public class Visit extends BaseEntity {
 	private static final long serialVersionUID = 1383248854710978391L;
 	
 	@Column(name = "visit_date")
+	// make a specific binding to the date format.
+	// look visit controller to see how to implement a similar technique but more global inside the controller.
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	
 	@Column(name = "description")

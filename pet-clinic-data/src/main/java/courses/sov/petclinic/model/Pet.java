@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +42,9 @@ public class Pet extends NamedEntity {
 	private PetType type;
 	
 	@Column(name = "birth_date")
+	// make a specific binding to the date format.
+	// look visit controller to see how to implement a similar technique but more global inside the controller.
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 	
 	// the foreign key goes her because "the owner of the relationship" between parent and child
