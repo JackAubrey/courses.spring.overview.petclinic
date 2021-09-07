@@ -3,6 +3,9 @@
  */
 package courses.sov.petclinic.controllers;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -41,6 +44,14 @@ public class VisitController {
 	@InitBinder
 	public void initOwnerDataBinder(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
+		
+		// a more global technique to handle custom data binding
+		dataBinder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+			@Override
+			public void setAsText(String text) throws IllegalArgumentException {
+				setValue(LocalDate.parse(text));
+			}
+		});	
 	}
 	
 	@ModelAttribute("visit")
