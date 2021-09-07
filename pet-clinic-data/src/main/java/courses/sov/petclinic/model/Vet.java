@@ -52,4 +52,8 @@ public class Vet extends Person {
 			this.specialties.add(specialty);
 		}
 	}
+	
+	public int getNrOfSpecialties() {
+		return specialties == null ? 0 : specialties.size();
+	}
 }

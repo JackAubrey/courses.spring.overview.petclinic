@@ -10,16 +10,17 @@
 			<caption>Vets</caption>
 			<thead>
 				<tr>
-					<th id="id" style="width: 150px;">#</th>
-					<th id="firstName" style="width: 150px;">First Name</th>
-					<th id="lastName" style="width: 150px;">Last Name</th>
+					<th id="id" style="width: 150px;">Name</th>
+					<th id="firstName" style="width: 250px;">Specialties</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="vet : ${vets}">
-					<td th:text="${vet.id}">#</td>
-					<td th:text="${vet.firstName}">First Name</td>
-					<td th:text="${vet.lastName}">Last Name</td>
+					<td th:text="${vet.firstName + ' ' + vet.lastName}">John Doe</td>
+					<td>
+						<span th:each="spec : ${vet.specialties}" th:text="${spec.description}" class="badge">Specialties</span>
+						<span th:if="${vet.nrOfSpecialties == 0}" >none</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>

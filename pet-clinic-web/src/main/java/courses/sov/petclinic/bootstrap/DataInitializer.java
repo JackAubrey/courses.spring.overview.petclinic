@@ -153,9 +153,14 @@ public class DataInitializer implements CommandLineRunner {
 		vet3.setLastName("Sinatra");
 		vet3.addSpecialty(radiology);
 		
+		var vet4 = new Vet();
+		vet4.setFirstName("Foo");
+		vet4.setLastName("NoSpec");
+		
 		vetService.save(vet1);
 		vetService.save(vet2);
 		vetService.save(vet3);
+		vetService.save(vet4);
 		
 		log.info("Loaded Vets.......");
 	}
